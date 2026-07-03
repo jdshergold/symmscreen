@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "symmscreen"
+version = "0.1.0"
+description = "Symmetry projectors and modulation-loss (Lambda) estimators for screening molecular crystals for directional dark matter detection."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Jack D. Shergold", email = "shergold@liverpool.ac.uk" },
+]
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "quaternionic>=1.0",
+    "spherical>=1.0",
+    "pymatgen>=2023.1.1",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
