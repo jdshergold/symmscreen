@@ -45,8 +45,8 @@ Or work purely from symmetry labels, with no CIF or coordinates at all. Here the
 ```python
 import symmscreen as ss
 
-ss.lambda_L_avg("D6h", crys_pg_symbol="D2h")
-ss.lambda_ideal_avg("D6h", crys_pg_symbol="D2h")   # ~ sqrt(2)/5, matching the benzene example in the paper.
+ss.lambda_L_avg(mol_pg_symbol="D6h", crys_pg_symbol="D2h")
+ss.lambda_ideal_avg(mol_pg_symbol="D6h", crys_pg_symbol="D2h")   # ~ sqrt(2)/5, matching the benzene example in the paper.
 ```
 
 Or build the combined survival operator and access them from there, as well as the matrices:
