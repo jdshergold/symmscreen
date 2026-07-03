@@ -69,6 +69,11 @@ def test_cif_convenience_functions_match_combined_survival(synthetic_cif):
     assert ss.lambda_coord(synthetic_cif) == pytest.approx(survival.lambda_coord())
 
 
+def test_combined_survival_from_cif_forwards_mol_tolerance(synthetic_cif):
+    survival = CombinedSurvival.from_cif(synthetic_cif, mol_tolerance=0.3)
+    assert survival.molecule.tolerance == 0.3
+
+
 def test_symmetry_convenience_functions_match_combined_survival():
     import symmscreen as ss
 

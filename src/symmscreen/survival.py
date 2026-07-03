@@ -186,15 +186,19 @@ class CombinedSurvival:
     # ==== Convenience constructors. ==== #
 
     @classmethod
-    def from_cif(cls, cif_path, molecule_index=0):
+    def from_cif(cls, cif_path, molecule_index=0, mol_tolerance=None):
         """Build crystal + molecule + T directly from one CIF file.
 
         The molecule's atoms are already expressed in the crystal's Cartesian frame,
         so `T` is the identity.
+
+        `mol_tolerance` is passed to pymatgen's `PointGroupAnalyzer` for the molecule,
+        defaulting to `MOLECULE_SYMMETRY_TOLERANCE` = 0.3 Angstrom (pymatgen's own
+        default) if omitted. Lower it for stricter (closer-to-exact) symmetry detection.
         """
         sg_name, a, b, c, atoms = cif_crystal_info(cif_path, molecule_index=molecule_index)
         crystal = CrystalProjector(sg_name=sg_name, a=a, b=b, c=c)
-        molecule = MoleculeProjector(atoms=atoms)
+        molecule = MoleculeProjector(atoms=atoms, tolerance=mol_tolerance)
         return cls(crystal, molecule)
 
     @classmethod

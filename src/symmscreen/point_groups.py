@@ -7,7 +7,12 @@ from pymatgen.symmetry.groups import PointGroup, SpaceGroup
 
 from ._clean import clean_matrix
 
-MOLECULE_SYMMETRY_TOLERANCE = 0.05
+# Matches pymatgen's own PointGroupAnalyzer default. Real, refined crystallographic
+# coordinates are rarely exactly symmetric, so a stricter (smaller) tolerance can fail
+# to detect symmetry a chemist would consider obvious (e.g. caffeine's mirror plane
+# needs tolerance >= 0.2). Lower it if you instead want to require closer-to-exact
+# symmetry, e.g. to avoid accepting a merely approximately-symmetric structure as exact.
+MOLECULE_SYMMETRY_TOLERANCE = 0.3
 
 # ==== Bidirectional symbol lookup for the 32 crystallographic point groups. ==== #
 HM_TO_SCHOENFLIES = {

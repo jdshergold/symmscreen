@@ -188,7 +188,12 @@ class MoleculeProjector:
         return int(round(5 * self.kappa(2)))
 
     @classmethod
-    def from_cif(cls, cif_path, molecule_index=0):
-        """Build from one molecule's atoms in a CIF (already in the crystal frame)."""
+    def from_cif(cls, cif_path, molecule_index=0, tolerance=None):
+        """Build from one molecule's atoms in a CIF (already in the crystal frame).
+
+        `tolerance` is passed to pymatgen's `PointGroupAnalyzer`, defaulting to
+        `MOLECULE_SYMMETRY_TOLERANCE` = 0.3 Angstrom (pymatgen's own default) if
+        omitted. Lower it for stricter (closer-to-exact) symmetry detection.
+        """
         _sg, _a, _b, _c, atoms = cif_crystal_info(cif_path, molecule_index=molecule_index)
-        return cls(atoms=atoms)
+        return cls(atoms=atoms, tolerance=tolerance)

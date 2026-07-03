@@ -78,6 +78,14 @@ def test_molecule_quadrupole_class_matches_paper_table():
     assert molecule.kappa(2) == pytest.approx(1 / 5, abs=1e-6)
 
 
+def test_molecule_projector_from_cif_forwards_tolerance(synthetic_cif):
+    """Real, refined coordinates are rarely exactly symmetric, so `from_cif` needs a
+    way to loosen pymatgen's default 0.05 Angstrom tolerance (e.g. caffeine's mirror
+    plane is only detected at tolerance >= 0.2)."""
+    molecule = MoleculeProjector.from_cif(synthetic_cif, tolerance=0.3)
+    assert molecule.tolerance == 0.3
+
+
 def test_rejects_ambiguous_or_missing_construction():
     with pytest.raises(ValueError):
         CrystalProjector()

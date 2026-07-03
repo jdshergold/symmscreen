@@ -40,6 +40,12 @@ survival.lambda_L()                    # Lambda^(L)(T), modulation signal loss d
 survival.lambda_coord()                # Lambda_coord, coordinate-aware estimator of total modulation signal loss.
 ```
 
+Real, refined crystallographic coordinates are rarely *exactly* symmetric, so `MoleculeProjector`'s symmetry-detection tolerance (passed to pymatgen's `PointGroupAnalyzer`, defaulting to pymatgen's own 0.3 Angstrom) matters. For example, caffeine's mirror plane needs `tolerance >= 0.2` to be detected at all; below that its real geometry looks like $C_1$ (no symmetry) and `quadrupole_class` reports 5 instead of the expected 3. Pass `mol_tolerance` to override the default — lower it if you want stricter, closer-to-exact symmetry detection instead:
+
+```python
+survival = CombinedSurvival.from_cif("your_crystal.cif", mol_tolerance=0.1)
+```
+
 Or work purely from symmetry labels, with no CIF or coordinates at all. Here the relative orientation, $\mathcal{T}$, is generally *unknown*, so the natural estimators are the analytic $\mathcal{T}$-averaged quantities, `lambda_L_avg` and `lambda_ideal_avg`. These have matching one-line functions that take the same symmetry labels rather than a CIF:
 
 ```python

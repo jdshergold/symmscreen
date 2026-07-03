@@ -25,9 +25,15 @@ def crystal_quadrupole_class(cif_path):
     return CombinedSurvival.from_cif(cif_path).crystal.quadrupole_class
 
 
-def molecule_quadrupole_class(cif_path, molecule_index=0):
-    """k = rank(Pi_2^(H)) in {0, 1, 2, 3, 5}, the molecule's own quadrupole survival class Q_k."""
-    return CombinedSurvival.from_cif(cif_path, molecule_index=molecule_index).molecule.quadrupole_class
+def molecule_quadrupole_class(cif_path, molecule_index=0, mol_tolerance=None):
+    """k = rank(Pi_2^(H)) in {0, 1, 2, 3, 5}, the molecule's own quadrupole survival class Q_k.
+
+    `mol_tolerance` is passed to pymatgen's `PointGroupAnalyzer` (default 0.3 Angstrom,
+    pymatgen's own default, if omitted); lower it for stricter symmetry detection.
+    """
+    return CombinedSurvival.from_cif(
+        cif_path, molecule_index=molecule_index, mol_tolerance=mol_tolerance
+    ).molecule.quadrupole_class
 
 
 def lambda_L_avg(mol_pg_symbol, sg_name=None, sg_number=None, crys_pg_symbol=None, l_max=12):
@@ -46,6 +52,12 @@ def lambda_ideal_avg(mol_pg_symbol, sg_name=None, sg_number=None, crys_pg_symbol
     return survival.lambda_ideal_avg(l_max=l_max)
 
 
-def lambda_coord(cif_path, molecule_index=0):
-    """Lambda_coord for the crystal/molecule in this CIF."""
-    return CombinedSurvival.from_cif(cif_path, molecule_index=molecule_index).lambda_coord()
+def lambda_coord(cif_path, molecule_index=0, mol_tolerance=None):
+    """Lambda_coord for the crystal/molecule in this CIF.
+
+    `mol_tolerance` is passed to pymatgen's `PointGroupAnalyzer` (default 0.3 Angstrom,
+    pymatgen's own default, if omitted); lower it for stricter symmetry detection.
+    """
+    return CombinedSurvival.from_cif(
+        cif_path, molecule_index=molecule_index, mol_tolerance=mol_tolerance
+    ).lambda_coord()
