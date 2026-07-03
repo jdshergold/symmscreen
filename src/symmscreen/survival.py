@@ -1,4 +1,4 @@
-"""Combined molecule-in-crystal survival operator, and the Lambda modulation-loss estimators.
+"""Combined molecule-in-crystal survival operator, and the Lambda modulation signal loss estimators.
 
 See Sec. "Molecular crystals" and Sec. "Modulation signals in dark matter detectors" of
 the paper. The combined survival operator is
@@ -94,7 +94,7 @@ class CombinedSurvival:
     # ==== Lambda estimators (no electronic-structure calculation required). ==== #
 
     def lambda_L(self, l_max=12):
-        """Lambda^(L)(T): orientation-specific group-theoretic modulation-loss estimator.
+        """Lambda^(L)(T): orientation-specific group-theoretic modulation signal loss estimator.
 
         Ratio of the expected f_RMS for this crystal/molecule/orientation to that of the
         same molecule with trivial (C1) crystal symmetry, estimated purely from the
@@ -135,7 +135,7 @@ class CombinedSurvival:
         return float(np.sqrt(max(num / den, 0.0)))
 
     def lambda_ideal_avg(self, l_max=12):
-        """<Lambda>_T: analytic SO(3)-average of the *absolute* modulation-loss estimator.
+        """<Lambda>_T: analytic SO(3)-average of the *absolute* modulation signal loss estimator.
 
         Unlike `lambda_L_avg`, which measures loss relative to the same molecule with
         no crystal (and so ignores whether the molecule itself is symmetric), this
@@ -159,7 +159,7 @@ class CombinedSurvival:
         return float(np.sqrt(max(num / den, 0.0)))
 
     def lambda_coord(self, shape_vector=None):
-        """Lambda_coord: coordinate-aware l=2 modulation-loss estimator.
+        """Lambda_coord: coordinate-aware l=2 modulation signal loss estimator.
 
         The best-performing estimator in the paper (shown to track the true f_RMS ratio
         linearly, Sec. "Demonstrations"). Requires the molecule's atomic coordinates,

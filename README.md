@@ -1,6 +1,6 @@
 # symmscreen
 
-Symmetry projectors and modulation-loss (Lambda) estimators for screening molecular crystals for directional dark matter detection.
+Symmetry projectors and modulation signal loss estimators for screening molecular crystals for directional dark matter detection.
 
 Companion package to **"The Role of Symmetries in Dark Matter Detector Design"** (arXiv:..., Benjamin Lillard, Jack D. Shergold, and Juri Smirnov). The paper develops a symmetry-projection framework that predicts how much of a molecule's directional dark matter scattering signal survives crystallisation, using only the crystal's space group and the molecule's point-group symmetry and geometry. This package implements exactly that framework (paper Secs. 3-6): the crystal and molecule point-group projectors, the combined survival operator, and the three Lambda estimators for the fractional modulation-signal loss.
 

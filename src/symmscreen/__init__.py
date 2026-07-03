@@ -1,4 +1,4 @@
-"""symmscreen: symmetry projectors and modulation-loss (Lambda) estimators for screening
+"""symmscreen: symmetry projectors and modulation signal loss estimators for screening
 molecular crystals for directional dark matter detection.
 
 Companion package to "The Role of Symmetries in Dark Matter Detector Design"
