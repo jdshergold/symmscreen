@@ -80,3 +80,26 @@ def test_symmetry_convenience_functions_match_combined_survival():
     survival = CombinedSurvival.from_symmetry(mol_pg_symbol="D6h", crys_pg_symbol="D2h")
     assert ss.lambda_L_avg("D6h", crys_pg_symbol="D2h") == pytest.approx(survival.lambda_L_avg())
     assert ss.lambda_ideal_avg("D6h", crys_pg_symbol="D2h") == pytest.approx(survival.lambda_ideal_avg())
+
+
+def test_quadrupole_class_from_bare_symbol_matches_either_projector():
+    import symmscreen as ss
+
+    from symmscreen import MoleculeProjector
+
+    # Q_k depends only on the point group itself, so a bare symbol gives the same
+    # answer whether it's read as a crystal or a molecule's own point group.
+    assert ss.quadrupole_class("D6h") == CrystalProjector(pg_symbol="D6h").quadrupole_class
+    assert ss.quadrupole_class("D6h") == MoleculeProjector(pg_symbol="D6h").quadrupole_class
+    assert ss.quadrupole_class("D6h") == 1
+    assert ss.quadrupole_class("Oh") == 0
+
+
+def test_quadrupole_class_accepts_sg_number_and_validates_inputs():
+    import symmscreen as ss
+
+    assert ss.quadrupole_class(sg_number=2) == 5  # P-1, triclinic.
+    with pytest.raises(ValueError):
+        ss.quadrupole_class()
+    with pytest.raises(ValueError):
+        ss.quadrupole_class(pg_symbol="D6h", sg_number=2)

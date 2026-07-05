@@ -17,6 +17,7 @@ methods you need on it -- it caches the crystal/molecule projectors internally, 
 is recomputed between calls.
 """
 
+from .projectors import CrystalProjector
 from .survival import CombinedSurvival
 
 
@@ -34,6 +35,18 @@ def molecule_quadrupole_class(cif_path, molecule_index=0, mol_tolerance=None):
     return CombinedSurvival.from_cif(
         cif_path, molecule_index=molecule_index, mol_tolerance=mol_tolerance
     ).molecule.quadrupole_class
+
+
+def quadrupole_class(pg_symbol=None, sg_name=None, sg_number=None):
+    """k = rank(Pi_2) in {0, 1, 2, 3, 5}, the paper's quadrupole survival class Q_k, from a bare
+    symmetry label alone (no CIF). Exactly one of `pg_symbol`, `sg_name`, or `sg_number` must be
+    given. `pg_symbol` applies equally to a crystal's point group or a molecule's own internal
+    symmetry -- Q_k depends only on the point group itself.
+    """
+    n_given = sum(x is not None for x in (pg_symbol, sg_name, sg_number))
+    if n_given != 1:
+        raise ValueError("Provide exactly one of pg_symbol, sg_name, or sg_number.")
+    return CrystalProjector(pg_symbol=pg_symbol, sg_name=sg_name, sg_number=sg_number).quadrupole_class
 
 
 def lambda_L_avg(mol_pg_symbol, sg_name=None, sg_number=None, crys_pg_symbol=None, l_max=12):

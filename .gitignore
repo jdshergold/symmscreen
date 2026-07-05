@@ -6,3 +6,9 @@ __pycache__/
 dist/
 build/
 paper_draft.tex
+
+# Scratch files from running the example notebook locally.
+*.cif
+*.xyz
+screen_cifs/
+symmscreen_cif_survival_table.csv

@@ -6,6 +6,12 @@ Companion package to **"The Role of Symmetries in Dark Matter Detector Design"**
 
 This package is intentionally lightweight, and does not compute electronic structure, form factors, scattering rates, or true modulation amplitudes. See [SCarFFF](https://github.com/jdshergold/SCarFFF) and [vsdm](https://github.com/blillard/vsdm) for software implementing these calculations.
 
+## Example notebook
+
+[`symmscreen_examples.ipynb`](symmscreen_examples.ipynb) walks through the package end to end: the survival metrics, point-group scans, orientation scans, loading a real CIF, visualising the unit cell, and looking at the projector matrices themselves.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jdshergold/symmscreen/blob/main/symmscreen_examples.ipynb)
+
 ## Installation
 
 ```bash
@@ -22,7 +28,7 @@ import symmscreen as ss
 ss.lambda_coord("your_crystal.cif")
 ```
 
-There's a matching one-line function for the quadrupole class of the crystal, and of the molecule itself, too: `ss.crystal_quadrupole_class(cif_path)`, `ss.molecule_quadrupole_class(cif_path)`.
+There's a matching one-line function for the quadrupole class of the crystal, and of the molecule itself, too: `ss.crystal_quadrupole_class(cif_path)`, `ss.molecule_quadrupole_class(cif_path)`. If you only have a bare point group symbol (or a space group name/number) rather than a CIF, `ss.quadrupole_class(pg_symbol=...)` computes the same $\mathsf{Q}_k \in \{0, 1, 2, 3, 5\}$ directly.
 
 If you want more than one metric for the same crystal, or want to inspect the underlying projector matrices, build a `CombinedSurvival` object directly instead. This caches the crystal/molecule projectors internally, so nothing is recomputed between calls. Since a CIF gives you the molecule's actual orientation, $\mathcal{T}$, the natural estimators here are the orientation-specific ones, `lambda_L` and `lambda_coord`:
 

@@ -22,6 +22,7 @@ from .screening import (
     lambda_coord,
     lambda_ideal_avg,
     molecule_quadrupole_class,
+    quadrupole_class,
 )
 from .survival import CombinedSurvival
 
@@ -39,4 +40,5 @@ __all__ = [
     "lambda_ideal_avg",
     "molecule_quadrupole_class",
     "pg_ops",
+    "quadrupole_class",
 ]

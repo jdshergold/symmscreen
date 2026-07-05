@@ -12,9 +12,10 @@ anisotropy that survives.
 """
 
 import numpy as np
+import py3Dmol
 
 from ._clean import clean_matrix
-from .cif import cif_crystal_info
+from .cif import all_molecules_from_cif, cif_crystal_info
 from .projectors import CrystalProjector, MoleculeProjector
 from .shape import coordinate_shape_vector
 
@@ -41,6 +42,7 @@ class CombinedSurvival:
         self.T = np.eye(3) if T is None else np.asarray(T, dtype=float)
         self._cache = {}
         self._l_0_cache = None
+        self._all_atoms = None
 
     def _Pi_H(self, l):
         if self.molecule is None:
@@ -183,6 +185,38 @@ class CombinedSurvival:
             return 0.0
         return float(numerator / denominator)
 
+    def plot(self, width=500, height=400):
+        """Render every molecule in the unit cell, plus the cell edges, with py3Dmol.
+
+        Requires the object to have been built via `from_cif`.
+        """
+        if self._all_atoms is None:
+            raise ValueError("plot() requires atoms and lattice vectors. Only works if CombinedSurvival is built using from_cif.")
+
+        a, b, c = self.crystal.a, self.crystal.b, self.crystal.c
+        atoms = [atom for molecule in self._all_atoms for atom in molecule]
+
+        xyz = [str(len(atoms)), ""] + [f"{sym} {x:.6f} {y:.6f} {z:.6f}" for sym, x, y, z in atoms]
+
+        viewer = py3Dmol.view(width=width, height=height)
+        viewer.addModel("\n".join(xyz), "xyz")
+        viewer.setStyle({"stick": {"radius": 0.12}, "sphere": {"scale": 0.25}})
+
+        corners = [i * a + j * b + k * c for i in (0, 1) for j in (0, 1) for k in (0, 1)]
+        edges = [(0, 1), (0, 2), (0, 4), (1, 3), (1, 5), (2, 3), (2, 6), (3, 7), (4, 5), (4, 6), (5, 7), (6, 7)]
+        for i, j in edges:
+            start, end = corners[i], corners[j]
+            viewer.addLine({
+                "start": {"x": float(start[0]), "y": float(start[1]), "z": float(start[2])},
+                "end": {"x": float(end[0]), "y": float(end[1]), "z": float(end[2])},
+                "color": "black",
+            })
+
+        viewer.setProjection("orthographic")
+        viewer.setBackgroundColor("white")
+        viewer.zoomTo()
+        viewer.show()
+
     # ==== Convenience constructors. ==== #
 
     @classmethod
@@ -199,7 +233,9 @@ class CombinedSurvival:
         sg_name, a, b, c, atoms = cif_crystal_info(cif_path, molecule_index=molecule_index)
         crystal = CrystalProjector(sg_name=sg_name, a=a, b=b, c=c)
         molecule = MoleculeProjector(atoms=atoms, tolerance=mol_tolerance)
-        return cls(crystal, molecule)
+        survival = cls(crystal, molecule)
+        survival._all_atoms = all_molecules_from_cif(cif_path)[3]
+        return survival
 
     @classmethod
     def from_symmetry(cls, mol_pg_symbol, sg_name=None, sg_number=None, crys_pg_symbol=None, T=None):
