@@ -8,7 +8,7 @@ This package is intentionally lightweight, and does not compute electronic struc
 
 ## Example notebook
 
-[`symmscreen_examples.ipynb`](symmscreen_examples.ipynb) walks through the package end to end: the survival metrics, point-group scans, orientation scans, loading a real CIF, visualising the unit cell, and looking at the projector matrices themselves.
+[`symmscreen_examples.ipynb`](symmscreen_examples.ipynb) walks through the package end to end: the survival metrics, point group scans, orientation scans, loading a real CIF, visualising the unit cell, and looking at the projector matrices themselves.
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jdshergold/symmscreen/blob/main/symmscreen_examples.ipynb)
 
